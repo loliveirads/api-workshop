@@ -7,3 +7,4 @@ class ProdutosSchema(BaseModel):
     nome: str
     descricao: Optional[str] = None
     preco: PositiveFloat
+    disponivel: bool

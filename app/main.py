@@ -11,7 +11,7 @@ lista_de_produtos = Produtos()
 def ola_mundo(): #Response
     return {"ola":"Mundo"}
 
-@app.get("/produtos", response_model=List(ProdutosSchema))
+@app.get("/produtos", response_model=List[ProdutosSchema])
 def listar_produtos():
     return lista_de_produtos.listar_produtos()
 

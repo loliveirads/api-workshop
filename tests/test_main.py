@@ -21,10 +21,11 @@ def test_tamanho_da_lista_de_produtos():
 
 def test_pega_um_produto():
     response = client.get("/produtos/1")
+    assert response.status_code == 200
     assert response.json() == {
         "id": 1,
         "nome": "Smartphone",
         "descricao": "Um telefone que é inteligente",
         "preco": 1500.0,
-        "disponivel": True,  # Adicione este campo
+        "disponivel": True  # Este campo é esperado no teste
     }
