@@ -3,6 +3,12 @@ on: pull_request
 jobs:
   Continuous-Integration:
     runs-on: ubuntu-latest
+    env:
+      POSTGRES_USER: meu_usuario
+      POSTGRES_PASSWORD: minha_senha
+      POSTGRES_DB: meu_banco
+      DB_HOST: localhost
+      DB_PORT: 5432
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
