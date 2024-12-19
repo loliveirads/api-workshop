@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 from .model import Produto  # Modelo ORM da tabela produtos
 from .config import SessionLocal, get_db  # Configuração do banco de dados
 
-from .schema import ProdutosCreateSchema, ProdutosSchema
+from .schema import ProdutosCreateSchema, ProdutosSchema, ProdutosUpdateSchema
 
 router = APIRouter()
 
@@ -75,13 +75,14 @@ async def remover_produto(produto_id: int, db: Session = Depends(get_db)):
 
 @router.put("/produtos/{produto_id}", response_model=ProdutosSchema)
 def atualizar_produto(
-    produto_id: int, produto_data: ProdutosSchema, db: Session = Depends(get_db)
+    produto_id: int, produto_data: ProdutosUpdateSchema, db: Session = Depends(get_db)
 ):
     db_produto = db.query(Produto).filter(Produto.id == produto_id).first()
     if db_produto:
-        for key, value in produto_data.dict().items():
-            setattr(db_produto, key, value) if value else None
+        for key, value in produto_data.dict(exclude_unset=True).items():
+            setattr(db_produto, key, value)
         db.commit()
         db.refresh(db_produto)
         return db_produto
     raise HTTPException(status_code=404, detail="Produto não encontrado")
+
