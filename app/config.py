@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 #2. Carregar Variáveis de Ambiente
 
-load_dotenv()
+load_dotenv(".env.prod")
 
 # Prints para depurar
 print("DB_PORT:", os.getenv("DB_PORT"))
