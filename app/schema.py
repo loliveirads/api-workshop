@@ -16,8 +16,12 @@ class ProdutosUpdateSchema(BaseModel):
     disponivel: Optional[bool]
 
 # Schema para resposta
-class ProdutosSchema(ProdutosCreateSchema):
+class ProdutosSchema(BaseModel):
     id: int
+    titulo: str
+    descricao: Optional[str]  # Agora aceita valores None
+    preco: float
+    disponivel: bool
 
     class Config:
         from_attributes = True

@@ -25,19 +25,9 @@ def ola_mundo():
     return {"ola": "Mundo"}
 
 @router.get("/produtos", response_model=List[ProdutosSchema])
-def listar_produtos(
-    skip: int = 0, 
-    limit: int = 10, 
-    disponivel: Optional[bool] = None, 
-    db: Session = Depends(get_db)
-):
-    try:
-        query = db.query(Produto)
-        if disponivel is not None:
-            query = query.filter(Produto.disponivel == disponivel)
-        return query.offset(skip).limit(limit).all()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erro ao listar produtos: {str(e)}")
+def listar_produtos(db: Session = Depends(get_db)):
+    return db.query(Produto).all()  # SELECT * FROM produtos
+
 
 @router.get("/produtos/{produto_id}", response_model=ProdutosSchema)
 def obter_produto(produto_id: int, db: Session = Depends(get_db)):
