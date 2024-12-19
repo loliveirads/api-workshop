@@ -18,18 +18,6 @@ from .config import SessionLocal, get_db  # Configuração do banco de dados
 
 from .schema import ProdutosCreateSchema, ProdutosSchema
 
-
-# Schema Pydantic
-class ProdutosSchema(BaseModel):
-    id: Optional[int]
-    titulo: str
-    descricao: Optional[str]
-    preco: PositiveFloat
-    disponivel: bool
-
-    class Config:
-        orm_mode = True
-
 router = APIRouter()
 
 @router.get("/")
