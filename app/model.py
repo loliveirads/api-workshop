@@ -10,4 +10,5 @@ class Produto(Base):
     titulo = Column(String, nullable=False)
     descricao = Column(String)
     preco = Column(Float, nullable=False)
-    disponivel = Column(Boolean, nullable=False, default=True)  # Nova coluna adicionada
+    disponivel = Column(Boolean, nullable=False, default=True)  
+    categoria = Column(String, nullable=True)  # Nova coluna

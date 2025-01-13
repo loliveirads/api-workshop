@@ -26,11 +26,12 @@ def ola_mundo():
 
 @router.get("/produtos", response_model=List[ProdutosSchema])
 def listar_produtos(db: Session = Depends(get_db)):
+    """Lista todos os produtos com suas categorias."""
     return db.query(Produto).all()  # SELECT * FROM produtos
-
 
 @router.get("/produtos/{produto_id}", response_model=ProdutosSchema)
 def obter_produto(produto_id: int, db: Session = Depends(get_db)):
+    """Obtém os detalhes de um produto específico."""
     produto = db.query(Produto).filter(Produto.id == produto_id).first()
     if produto:
         return produto
@@ -38,6 +39,7 @@ def obter_produto(produto_id: int, db: Session = Depends(get_db)):
 
 @router.post("/produtos", response_model=ProdutosSchema)
 def inserir_produto(produto: ProdutosCreateSchema, db: Session = Depends(get_db)):
+    """Insere um novo produto, incluindo a categoria."""
     try:
         # Verificar duplicidade no título
         existente = db.query(Produto).filter(Produto.titulo == produto.titulo).first()
@@ -53,9 +55,9 @@ def inserir_produto(produto: ProdutosCreateSchema, db: Session = Depends(get_db)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao inserir produto: {str(e)}")
 
-
 @router.delete("/produtos/{produto_id}", response_model=dict)
 async def remover_produto(produto_id: int, db: Session = Depends(get_db)):
+    """Remove um produto pelo ID."""
     produto = db.query(Produto).filter(Produto.id == produto_id).first()
     if produto:
         db.delete(produto)
@@ -67,6 +69,7 @@ async def remover_produto(produto_id: int, db: Session = Depends(get_db)):
 def atualizar_produto(
     produto_id: int, produto_data: ProdutosUpdateSchema, db: Session = Depends(get_db)
 ):
+    """Atualiza os detalhes de um produto específico."""
     db_produto = db.query(Produto).filter(Produto.id == produto_id).first()
     if db_produto:
         for key, value in produto_data.dict(exclude_unset=True).items():
@@ -75,4 +78,3 @@ def atualizar_produto(
         db.refresh(db_produto)
         return db_produto
     raise HTTPException(status_code=404, detail="Produto não encontrado")
-
